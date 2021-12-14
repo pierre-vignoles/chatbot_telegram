@@ -1,0 +1,20 @@
+{"intents": [
+    {"tag": "text_test",
+     "type": "text",
+     "patterns": ["Hi", "Hey", "Is anyone there?", "Hello", "good morning", "good evening", "good afternoon"],
+     "responses": ["Hello", "Hi", "Hi there"]
+    },
+    {"tag": "multiple_photos_test",
+     "type": "multiple_photos",
+    "patterns": ["question1", "question2],
+    "responses": ["answer1", "answer2", "answer3"],
+     "link": ["path1", "path2", "path3"]
+    },
+    {"tag": "file_test",
+      "type": "file",
+    "patterns": ["question1", "question2"],
+    "responses": "answer",
+    "link": "path"
+    }
+]
+}
