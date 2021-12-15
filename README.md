@@ -34,5 +34,7 @@ In this file you will have to write all the sentences you would like the chatbot
 ## Launch
 Execute the following command in a terminal : `python main.py` 
 
+## Heroku
+You can add this program on HEROKU to let it work without interruption for free. The file Procfile is there for that.
+
 ### You can now speak to your bot in your telegram application !
-    
