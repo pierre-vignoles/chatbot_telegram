@@ -7,10 +7,7 @@ from telebot import types
 
 
 def function_message_init_bot() -> str:
-    return """Hi, I'm Pierre and this is the bot I created to introduce myself. 
-You can ask for information about me.
-You can also click on one button below if you are interested in these topics.
-Write /help if you want to see these informations again."""
+    return """your presentation text"""
 
 
 def function_regroup_all() -> Tuple[
@@ -33,11 +30,12 @@ if __name__ == '__main__':
     def send_welcome(message):
         chatid = message.chat.id
 
+        # Custom button
         markup = types.ReplyKeyboardMarkup()
-        itembtn1 = types.KeyboardButton('My resume')
-        itembtn2 = types.KeyboardButton('My professional experience')
-        itembtn3 = types.KeyboardButton('My portfolio')
-        itembtn4 = types.KeyboardButton('Contact me')
+        itembtn1 = types.KeyboardButton('name_button_1')
+        itembtn2 = types.KeyboardButton('name_button_2')
+        itembtn3 = types.KeyboardButton('name_button_3')
+        itembtn4 = types.KeyboardButton('name_button_4')
         markup.row(itembtn1, itembtn2)
         markup.row(itembtn3, itembtn4)
 

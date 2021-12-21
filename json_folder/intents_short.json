@@ -6,7 +6,7 @@
     },
     {"tag": "multiple_photos_test",
      "type": "multiple_photos",
-    "patterns": ["question1", "question2],
+    "patterns": ["question1", "question2"],
     "responses": ["answer1", "answer2", "answer3"],
      "link": ["path1", "path2", "path3"]
     },
