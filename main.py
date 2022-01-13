@@ -2,12 +2,16 @@ from function_utils import *
 from model import *
 from my_config import *
 
-from telebot import TeleBot
+import telebot
 from telebot import types
 
 
 def function_message_init_bot() -> str:
-    return """your presentation text"""
+    return """Hi, I'm Pierre, a developer, and this is Rob the bot I created to introduce myself. 
+You can ask for information about me
+You can ask for information about me.
+You can also click on one button below if you are interested in these topics.
+Write /help if you want to see these informations again."""
 
 
 def function_regroup_all() -> Tuple[
@@ -21,7 +25,7 @@ def function_regroup_all() -> Tuple[
 
 
 if __name__ == '__main__':
-    bot = TeleBot(TOKEN, parse_mode=None)
+    bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
     model, tokenizer, lbl_encoder, stopWords, nlp, data = function_regroup_all()
 
@@ -30,12 +34,11 @@ if __name__ == '__main__':
     def send_welcome(message):
         chatid = message.chat.id
 
-        # Custom button
         markup = types.ReplyKeyboardMarkup()
-        itembtn1 = types.KeyboardButton('name_button_1')
-        itembtn2 = types.KeyboardButton('name_button_2')
-        itembtn3 = types.KeyboardButton('name_button_3')
-        itembtn4 = types.KeyboardButton('name_button_4')
+        itembtn1 = types.KeyboardButton('My resume')
+        itembtn2 = types.KeyboardButton('My professional experience')
+        itembtn3 = types.KeyboardButton('My portfolio')
+        itembtn4 = types.KeyboardButton('Contact me')
         markup.row(itembtn1, itembtn2)
         markup.row(itembtn3, itembtn4)
 
@@ -49,13 +52,17 @@ if __name__ == '__main__':
         markup = types.ReplyKeyboardRemove(selective=False)
 
         result, answer_valid = function_return_predict_model(message.text, model, tokenizer, stopWords, nlp)
-        answer_text, answer_file_link = function_return_type_answer_model(answer_valid, result, lbl_encoder, data)
+        answer_text, answer_file_link, answer_file_type = function_return_type_answer_model(answer_valid, result,
+                                                                                            lbl_encoder, data)
         if answer_file_link is None:
             bot.send_message(chatid, answer_text, reply_markup=markup)
         if type(answer_file_link) == str:
             bot.send_message(chatid, answer_text, reply_markup=markup)
             doc = open(answer_file_link, 'rb')
-            bot.send_document(chatid, doc)
+            if answer_file_type == "document":
+                bot.send_document(chatid, doc)
+            elif answer_file_type == "photo":
+                bot.send_photo(chatid, doc)
         elif type(answer_file_link) == list:
             bot.send_message(chatid, answer_text[0], reply_markup=markup)
             for idx, photo in enumerate(answer_file_link):
@@ -65,7 +72,6 @@ if __name__ == '__main__':
                     bot.send_photo(chatid, doc)
                 elif "giphy" in photo:
                     bot.send_animation(chatid, photo)
-
 
     # Verification of the content type of the message received : if type other than text => return a specific message
     @bot.message_handler(func=lambda message: True, content_types=['photo', 'audio', 'video', 'document', 'sticker',

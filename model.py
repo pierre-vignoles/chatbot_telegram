@@ -48,15 +48,16 @@ def function_return_predict_model(input_sentence: str, model: Sequential, tokeni
                                   nlp: Language) -> Tuple[List[float], bool]:
     result = model.predict(function_transform_input_user(input_sentence, tokenizer, stopWords, nlp))
     for proba in result[0]:
-        if proba >= 1e-15:
+        if proba >= 6e-1:
             answer_valid = True
+            break
         else:
             answer_valid = False
     return result, answer_valid
 
 
 def function_return_type_answer_model(answer_valid: bool, result: List[float], lbl_encoder: LabelEncoder,
-                                      data: Dict[str, List[Dict[str, Union[str, List[str]]]]]) -> Tuple[str, Union[None, str, List[str]]]:
+                                      data: Dict[str, List[Dict[str, Union[str, List[str]]]]]) -> Tuple[str, Union[None, str, List[str]], str]:
     if answer_valid == True:
         tag = lbl_encoder.inverse_transform([np.argmax(result)])
         for i in data['intents']:
@@ -64,16 +65,24 @@ def function_return_type_answer_model(answer_valid: bool, result: List[float], l
                 if i['type'] == 'text':
                     answer_text = np.random.choice(i['responses'])
                     answer_file_link = None
+                    answer_file_type = None
                 elif i['type'] == 'file':
                     answer_text = i['responses']
                     answer_file_link = i['link']
+                    answer_file_type = "document"
+                elif i['type'] == 'photo':
+                    answer_text = i['responses']
+                    answer_file_link = i['link']
+                    answer_file_type = "photo"
                 elif i['type'] == 'multiple_photos':
                     answer_text = i['responses']
                     answer_file_link = i['link']
+                    answer_file_type = "photo"
 
     else:
         answer_text = np.random.choice(
             ["I'm sorry I do not undertand", "What did you say ?", "Can you rephrase your sentence differently?"])
         answer_file_link = None
+        answer_file_type = None
 
-    return answer_text, answer_file_link
+    return answer_text, answer_file_link, answer_file_type
