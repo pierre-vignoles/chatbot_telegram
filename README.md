@@ -23,9 +23,10 @@ Once you got the api token of your bot, in the `my_config.py` file change the va
 Before you can run this program, you will have to complete the most important file : `ìntents.json`
 In this file you will have to write all the sentences you would like the chatbot learn. 
 * tag : title of the question/answer. It does not matter for the model. This is just for you.
-* type : You have 3 possibilities
+* type : You have 4 possibilities
     * text : the chatbot will answer only with a text message
     * file : the chatbot will send a text message followed by a document
+    * photos : the chatbot will send a text message followed by a photo.
     * multiple_photos : the chatbot will send text messages with pictures attached.
 * patterns : write all possible turns of phrase for a question
 * responses : write the chatbot's answers. You can write more than one. The chatbot will choose randomly one of them.
