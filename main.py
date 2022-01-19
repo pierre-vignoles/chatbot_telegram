@@ -7,11 +7,7 @@ from telebot import types
 
 
 def function_message_init_bot() -> str:
-    return """Hi, I'm Pierre, a developer, and this is Rob the bot I created to introduce myself. 
-You can ask for information about me
-You can ask for information about me.
-You can also click on one button below if you are interested in these topics.
-Write /help if you want to see these informations again."""
+    return """Introduction message"""
 
 
 def function_regroup_all() -> Tuple[
@@ -28,6 +24,7 @@ if __name__ == '__main__':
     bot = telebot.TeleBot(TOKEN, parse_mode=None)
 
     model, tokenizer, lbl_encoder, stopWords, nlp, data = function_regroup_all()
+    max_proba_treshold = function_find_max_proba_treshold(model, tokenizer, stopWords, nlp)
 
 
     @bot.message_handler(commands=['start', 'help'])
@@ -51,7 +48,8 @@ if __name__ == '__main__':
         chatid = message.chat.id
         markup = types.ReplyKeyboardRemove(selective=False)
 
-        result, answer_valid = function_return_predict_model(message.text, model, tokenizer, stopWords, nlp)
+        result, answer_valid = function_return_predict_model(message.text, model, tokenizer, stopWords, nlp,
+                                                             max_proba_treshold)
         answer_text, answer_file_link, answer_file_type = function_return_type_answer_model(answer_valid, result,
                                                                                             lbl_encoder, data)
         if answer_file_link is None:

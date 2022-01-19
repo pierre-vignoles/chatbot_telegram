@@ -4,6 +4,12 @@
      "patterns": ["Hi", "Hey", "Is anyone there?", "Hello", "good morning", "good evening", "good afternoon"],
      "responses": ["Hello", "Hi", "Hi there"]
     },
+    {"tag": "text_photo",
+     "type": "photo",
+     "patterns": ["question1", "question2"],
+     "responses": "answer",
+      "link": "path"
+    },
     {"tag": "multiple_photos_test",
      "type": "multiple_photos",
     "patterns": ["question1", "question2"],

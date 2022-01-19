@@ -44,11 +44,20 @@ def function_model_training(nb_epochs: int, padded_sequences, training_labels, n
     return model
 
 
+def function_find_max_proba_treshold(model: Sequential, tokenizer: Tokenizer, stopWords: set, nlp: Language) -> float:
+    result = model.predict(function_transform_input_user("frezfrezf", tokenizer, stopWords, nlp))
+    max_proba_treshold = max(result[0])
+    return max_proba_treshold
+
+
 def function_return_predict_model(input_sentence: str, model: Sequential, tokenizer: Tokenizer, stopWords: set,
-                                  nlp: Language) -> Tuple[List[float], bool]:
+                                  nlp: Language, max_proba_treshold: float) -> Tuple[List[float], bool]:
     result = model.predict(function_transform_input_user(input_sentence, tokenizer, stopWords, nlp))
+    # print("\n")
+    # print(input_sentence)
+    # print(result[0])
     for proba in result[0]:
-        if proba >= 6e-1:
+        if proba > max_proba_treshold + 0.4:
             answer_valid = True
             break
         else:
